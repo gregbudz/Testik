@@ -192,7 +192,7 @@ int registrace(void)
 	if (strcmp(heslo, heslo1))
 	{
 		printf("Hesla se nezhoduji, skuste znovu.\n");
-		registrace();
+		 j = registrace();
 		return j;
 	}
 
@@ -202,15 +202,17 @@ int registrace(void)
 		j = 100;
 		return j;
 	}
-
-	for (j = 0; j < (sizeof(jmena) / sizeof(jmena[0])); j++)
+	int x = 0;
+	while(jmena[x][0] != 0)
 	{
-		if (!strcmp(jmeno, jmena[j]) && !strcmp(heslo, hesla[j]))
+		if (strcmp(jmeno, jmena[x]) == 0)
 		{
 			printf("Takyto uzivatel uz existuje, skuste znovu.\n");
-			registrace();
+			getchar();
+			j = registrace();
 			return j;
 		}
+		x++;
 	}
 
 	do
