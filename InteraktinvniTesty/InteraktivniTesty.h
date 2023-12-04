@@ -29,7 +29,7 @@ void vytvorit_novy_test(void);
 
 //testy podfunkce
 int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zaciatok_c);
-
+void vratit_sa_prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zaciatok_c);
 void vypisat();
 void vypisat_pohl();
 void vypisat_vek();

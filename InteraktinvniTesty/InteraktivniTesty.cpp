@@ -369,8 +369,8 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 {
 	int poradi = 1;
 	int t = 0;
-	char spravna_odpoved = 0, typ = 0;
-	char spravna_text_odpoved[MaX_STR_T] = {}, text_typ[MaX_STR_T] = {};
+	char spravna_odpoved, typ;
+	char spravna_text_odpoved[MaX_STR_T], text_typ[MaX_STR_T];
 
 	int c = 0;
 	while (of.otazky[i][j][c] != '\0')
@@ -493,9 +493,9 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 		}
 
 		printf("Zadej svoji odpoved: ");
-		scanf("%c", &typ);
-		printf("%c", typ);
+		scanf(" %c", &typ);
 		while (getchar() != '\n');
+		printf("%c/\n", typ);
 
 		if (typ == spravna_odpoved) spravnespatne[j] = 1;
 
@@ -504,7 +504,7 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 			printf("\nZadej cislo otazky: ");
 			scanf("%d", &poradie);
 			int g = poradie - 1;
-			prejst_otazku(i, g, poradie, spravnespatne, a, zaciatok_c);
+			g = prejst_otazku(i, g, poradie, spravnespatne, a, zaciatok_c);
 			j--;
 		}
 
