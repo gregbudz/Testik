@@ -1,4 +1,3 @@
-
 VSo 2 Kde_si? 1 3 Tu* Tam Hentam Kde_som? 1 2 V_Brne* V_Cechach 
 Jogurt 1 S_cim_sa_je_jogurt? 1 4 S_lyzicou S_rozkom* S_noznicami S_nohou 
 Narodenie 2 Kedy_sa_narodil_Jezis?* 2 1 V_akom_velkomeste_som_sa_narodil?* 2 trstena 

@@ -3,3 +3,8 @@ adel adel zena 31
 dad dad muz 12 
 dae dae muz 32 
 dsd sds muz 23 
+dsa dsa muz 43 
+dre dre muz 32 
+fread fread zena 14 
+hre hre muz 23 
+r r muz 12 

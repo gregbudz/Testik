@@ -6,21 +6,16 @@
 
 #define MAX_STR 21
 
-#define MAX_UZI 30
-#define MAX_TEST 10
-#define MAX_STR_P 21
-#define MAX_STR_T 40
-
 struct h_testy
 {
 	int  uzivatel;
 	char test[MAX_STR];
 	double  cas;
-	int   score;
+	double   score;
 	struct h_testy* dalsi;
 };
 
-void pridat(int uzivatel, char* test, double cas, int score, struct h_testy** uk_prvni)
+void pridat(int uzivatel, char* test, double cas, double score, struct h_testy** uk_prvni)
 {
 	struct h_testy* novyTest;
 	struct h_testy* aktTest;
@@ -38,7 +33,7 @@ void pridat(int uzivatel, char* test, double cas, int score, struct h_testy** uk
 		*uk_prvni = novyTest;
 		return;
 	}
-	else if (novyTest->uzivatel < (*uk_prvni)->uzivatel)
+	else if (novyTest->uzivatel <= (*uk_prvni)->uzivatel)
 	{
 		novyTest->dalsi = *uk_prvni;
 		*uk_prvni = novyTest;
@@ -53,7 +48,7 @@ void pridat(int uzivatel, char* test, double cas, int score, struct h_testy** uk
 			aktTest->dalsi = novyTest;
 			return;
 		}
-		else if (novyTest->uzivatel < aktTest->dalsi->uzivatel)
+		else if (novyTest->uzivatel <= aktTest->dalsi->uzivatel)
 		{
 			novyTest->dalsi = aktTest->dalsi;
 			aktTest->dalsi = novyTest;

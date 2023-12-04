@@ -1,1 +1,15 @@
-2 VSo 0 32 VSo 100.00 1
+0 VSo 50.00 2
+0 Jogurt 0.00 3
+7 VSo 50.00 1
+6 Jogurt 100.00 2
+7 Narodenie 100.00 5
+8 Narodenie 0.00 2
+9 VSo 50.00 2
+1 VSo 0.00 28
+0 VSo 0.00 20
+0 Jogurt 100.00 2
+9 VSo 0.00 P 11 s
+9 VSo 0.00 P 8 s
+9 VSo inf P 4 s
+9 VSo 50.00 P 5 s
+9 VSo 50.00 9
