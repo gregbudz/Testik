@@ -42,36 +42,6 @@ struct {
 	double casy[MaX_UZI][MaX_TEST];
 }moje;
 
-//prihlasenie funkce
-int nacteni_uzivatelu(void);
-
-int menu(void);
-int prihlaseni(void);
-int registrace(void);
-
-//testy funkce
-int nacteni_testu(void);
-
-void menuUzi(int a);
-void moje_hodnoceni(int a);
-void zacit_novy_test(int a);
-void pokracovat_v_nedokoncenom_teste(int a);
-void hra_riskuj(int a);
-
-void menuAdmin(void);
-void vsechny_testy(void);
-void vsechny_hodnoceni(void);
-void vytvorit_novy_test(void);
-
-//testy podfunkce
-int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zaciatok_c);
-
-void vypisat();
-void vypisat_pohl();
-void vypisat_vek();
-void vypisat_test();
-
-
 int main() 
 {
 	nacteni_uzivatelu();
@@ -98,11 +68,7 @@ int nacteni_uzivatelu(void)
 		exit(1);
 	}
 
-	while (!feof(fp)) 
-	{
-		fscanf(fp, "%s %s %s %d", uzi.jmena[uzi.loc1], uzi.hesla[uzi.loc1], uzi.pohlavia[uzi.loc1], &uzi.veky[uzi.loc1]); 
-		uzi.loc1++;
-	}
+	while (fscanf(fp, "%s %s %s %d", uzi.jmena[uzi.loc1], uzi.hesla[uzi.loc1], uzi.pohlavia[uzi.loc1], &uzi.veky[uzi.loc1]) == 4) uzi.loc1++;
 
 	fclose(fp);
 	return uzi.loc1;
@@ -312,7 +278,7 @@ void moje_hodnoceni(int a)
 	{
 		if (x == a)
 		{
-			printf("%s: %.2lf P %.0lf s\n", test, moje.score[a][i], moje.casy[a][i]);
+			printf("%s: %.2lf P %.2lf s\n", test, moje.score[a][i], moje.casy[a][i]);
 			strcpy(moje.testy[a][i], test);
 			score += moje.score[a][i];
 			cas += moje.casy[a][i];
@@ -355,7 +321,7 @@ void zacit_novy_test(int a)
 	i -= 1;
 
 	printf("\n* = Chci se vratit k jine otazce.\n");
-	printf("/ = Chci si ulozit test a ukoncit aplikaci.\n\n");
+	printf("/ = Chci si ulozit test a ukoncit program.\n\n");
 
 	time_t zaciatok_c, koniec_c;
 	time(&zaciatok_c);
@@ -376,7 +342,7 @@ void zacit_novy_test(int a)
 
 	time(&koniec_c);
 	double cas = difftime(koniec_c, zaciatok_c);
-	printf("Trvalo to: %.0lf s\n", cas);
+	printf("Trvalo to: %.2lf s\n", cas);
 	printf("\n");
 
 	int x = sizeof(moje.testy[a]) / sizeof(moje.testy[a][0]) + 1;
@@ -394,7 +360,7 @@ void zacit_novy_test(int a)
 	FILE* fp;
 	fp = fopen("..\\..\\..\\d_testy.txt", "a");
 
-	fprintf(fp, "%d %s %.2lf %.0lf\n", a, moje.testy[a][x], moje.score[a][x], cas);
+	fprintf(fp, "%d %s %.2lf %.2lf\n", a, moje.testy[a][x], moje.score[a][x], cas);
 	fclose(fp);
 	while (getchar() != '\n');
 }
@@ -436,19 +402,16 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 		printf("Zadej svoji textovou odpoved: ");
 		scanf("%79s", text_typ);
 		while (getchar() != '\n');
-		if (strcmp(spravna_text_odpoved, text_typ) == 0)
-		{
-			printf("Odpovedel si spravne\n");
-			spravnespatne[j] = 1;
-		}
+
+		if (strcmp(spravna_text_odpoved, text_typ) == 0) spravnespatne[j] = 1;
 
 		else if (strcmp("*", text_typ) == 0)
 		{
-			printf("Zadej cislo otazky: ");
+			printf("\nZadej cislo otazky: ");
 			scanf("%d", &poradie);
 			int g = poradie - 1;
-			j = prejst_otazku(i, g, poradie, spravnespatne, a, zaciatok_c);
-			getchar();
+			g = prejst_otazku(i, g, poradie, spravnespatne, a, zaciatok_c);
+			j--;
 		}
 
 		else if (strcmp("/", text_typ) == 0)
@@ -462,7 +425,7 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 
 			fp = fopen("..\\..\\..\\n_testy.txt", "a");
 
-			fprintf(fp, "%d %s %d %.0lf ", a, of.testy[i], j, cas);
+			fprintf(fp, "%d %s %d %.2lf ", a, of.testy[i], j, cas);
 			int x = 0;
 			while (spravnespatne[x])
 			{
@@ -475,11 +438,7 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 			exit(1);
 		}
 
-		else
-		{
-			printf("Spatna odpoved\n");
-			spravnespatne[j] = 2;
-		}
+		else spravnespatne[j] = 2;
 	}
 
 	else if (t == 0)
@@ -535,21 +494,18 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 
 		printf("Zadej svoji odpoved: ");
 		scanf("%c", &typ);
-		getchar();
+		printf("%c", typ);
+		while (getchar() != '\n');
 
-		if (typ == spravna_odpoved)
-		{
-			printf("Odpovedel si spravne\n");
-			spravnespatne[j] = 1;
-		}
+		if (typ == spravna_odpoved) spravnespatne[j] = 1;
 
 		else if (typ == '*')
 		{
-			printf("Zadej cislo otazky: ");
+			printf("\nZadej cislo otazky: ");
 			scanf("%d", &poradie);
 			int g = poradie - 1;
-			j = prejst_otazku(i, g, poradie, spravnespatne, a, zaciatok_c);
-			getchar();
+			prejst_otazku(i, g, poradie, spravnespatne, a, zaciatok_c);
+			j--;
 		}
 
 		else if (typ == '/')
@@ -563,7 +519,7 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 
 			fp = fopen("..\\..\\..\\n_testy.txt", "a");
 
-			fprintf(fp, "%d %s %d %.0lf ", a, of.testy[i], j, cas);
+			fprintf(fp, "%d %s %d %.2lf ", a, of.testy[i], j, cas);
 
 			int x = 0;
 			while (spravnespatne[x])
@@ -577,11 +533,7 @@ int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zac
 			exit(1);
 		}
 
-		else
-		{
-			printf("Spatna odpoved\n");
-			spravnespatne[j] = 2;
-		}
+		else spravnespatne[j] = 2;
 		printf("\n");
 	}
 	return j;
@@ -671,7 +623,7 @@ void pokracovat_v_nedokoncenom_teste(int a)
 	int j = poradie - 1;
 
 	printf("* = Chci se vratit k jine otazce.\n");
-	printf("/ = Chci si ulozit test a ukoncit aplikaci.\n\n");
+	printf("/ = Chci si ulozit test a ukoncit program.\n\n");
 
 	time_t zaciatok_c, koniec_c;
 	time(&zaciatok_c);
@@ -706,7 +658,7 @@ void pokracovat_v_nedokoncenom_teste(int a)
 
 	fp = fopen("..\\..\\..\\d_testy.txt", "a");
 
-	fprintf(fp, "%d %s %.2lf P %.0lf s\n", a, moje.testy[a][x], moje.score[a][x], cas[index]);
+	fprintf(fp, "%d %s %.2lf %.2lf\n", a, moje.testy[a][x], moje.score[a][x], cas[index]);
 
 	fclose(fp);
 	while (getchar() != '\n');
@@ -941,19 +893,19 @@ int nacteni_testu(void)
 }
 //
 
-void vypisat()
+void vypisat(void)
 {
 	struct h_testy* aktTest = prvni;
 	printf("\n");
 	while (aktTest)
 	{
-		printf("%s: %s %.2lf P %.0lf s\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
+		printf("%s: %s %.2lf P %.2lf s\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
 		aktTest = aktTest->dalsi;
 	}
 	getchar();
 }
 //
-void vypisat_pohl()
+void vypisat_pohl(void)
 {
 	struct h_testy* aktTest = prvni;
 	char pohlavi[MAX_STR];
@@ -971,7 +923,7 @@ void vypisat_pohl()
 	{
 		if (strcmp(pohlavi, uzi.pohlavia[aktTest->uzivatel]) == 0)
 		{
-			printf("%s: %s %.2lf P %.0lf s\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
+			printf("%s: %s %.2lf P %.2lf s\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
 			i++;
 			score += aktTest->score;
 		}
@@ -986,7 +938,7 @@ void vypisat_pohl()
 	getchar();
 }
 //
-void vypisat_vek()
+void vypisat_vek(void)
 {
 	struct h_testy* aktTest = prvni;
 	int z_vek, k_vek;
@@ -1000,7 +952,7 @@ void vypisat_vek()
 	{
 		if (z_vek <= uzi.veky[aktTest->uzivatel] && uzi.veky[aktTest->uzivatel] <= k_vek)
 		{
-			printf("%s: %s %.2lf P %.0lf s\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
+			printf("%s: %s %.2lf P %.2lf s\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
 			i++;
 			score += aktTest->score;
 		}
@@ -1015,7 +967,7 @@ void vypisat_vek()
 	getchar();
 }
 //
-void vypisat_test()
+void vypisat_test(void)
 {
 	struct h_testy* aktTest = prvni;
 	char test[MaX_STR_P];
@@ -1029,7 +981,7 @@ void vypisat_test()
 	{
 		if (strcmp(test, aktTest->test) == 0)
 		{
-			printf("%s: %s %.2lf %.0lf\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
+			printf("%s: %s %.2lf %.2lf\n", uzi.jmena[aktTest->uzivatel], aktTest->test, aktTest->score, aktTest->cas);
 			i++;
 			score += aktTest->score;
 		}

@@ -6,6 +6,35 @@
 
 #define MAX_STR 21
 
+//prihlasenie funkce
+int nacteni_uzivatelu(void);
+
+int menu(void);
+int prihlaseni(void);
+int registrace(void);
+
+//testy funkce
+int nacteni_testu(void);
+
+void menuUzi(int a);
+void moje_hodnoceni(int a);
+void zacit_novy_test(int a);
+void pokracovat_v_nedokoncenom_teste(int a);
+void hra_riskuj(int a);
+
+void menuAdmin(void);
+void vsechny_testy(void);
+void vsechny_hodnoceni(void);
+void vytvorit_novy_test(void);
+
+//testy podfunkce
+int prejst_otazku(int i, int j, int poradie, int* spravnespatne, int a, long zaciatok_c);
+
+void vypisat();
+void vypisat_pohl();
+void vypisat_vek();
+void vypisat_test();
+
 struct h_testy
 {
 	int  uzivatel;
